@@ -53,3 +53,10 @@ class VirtualEnvironment(object):
         from django.core.management import call_command
         return call_command
 
+    def run(self, my_settings):
+        self.activate()
+        if hasattr(self.caller, 'setUp'):
+            self.caller.setUp()
+
+        self.configure_settings(my_settings)
+ 
