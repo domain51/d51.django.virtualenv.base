@@ -26,6 +26,8 @@ class VirtualEnvironment(object):
     @property
     def activation_file(self):
         caller_path = os.path.dirname(os.path.realpath(self.caller.__file__))
+        if 'bin' == os.path.basename(caller_path):
+            caller_path = os.path.dirname(caller_path)
         return os.path.join(caller_path, 'bin', 'activate_this.py')
 
     def activate(self):
