@@ -3,3 +3,4 @@
 MANIFEST
 dist/*
 build/*
+d51.django.virtualenv.base.egg-info/
