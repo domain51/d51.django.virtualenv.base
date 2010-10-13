@@ -22,13 +22,20 @@ class VirtualEnvironment(object):
         self.caller = caller
         self.database_engine = database_engine
         self.error_message = error_message
+        self._activation_file = None
 
     @property
     def activation_file(self):
-        caller_path = os.path.dirname(os.path.realpath(self.caller.__file__))
-        if 'bin' == os.path.basename(caller_path):
-            caller_path = os.path.dirname(caller_path)
-        return os.path.join(caller_path, 'bin', 'activate_this.py')
+        if not self._activation_file:
+            caller_path = os.path.dirname(os.path.realpath(self.caller.__file__))
+            if 'bin' == os.path.basename(caller_path):
+                caller_path = os.path.dirname(caller_path)
+            self._activation_file = os.path.join(caller_path, 'bin', 'activate_this.py')
+        return self._activation_file
+
+    @activation_file.setter
+    def activation_file(self, v):
+        self._activation_file = v
 
     def activate(self):
         if not os.path.exists(self.activation_file):
