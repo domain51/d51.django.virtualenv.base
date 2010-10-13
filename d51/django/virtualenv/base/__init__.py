@@ -37,12 +37,14 @@ class VirtualEnvironment(object):
 
         execfile(self.activation_file, dict(__file__=self.activation_file))
 
-    def configure_settings(self, customizations):
+    def configure_settings(self, customizations, reset=True):
         # Django expects a `DATABASE_ENGINE` value
         if "DATABASE_ENGINE" not in customizations:
             customizations["DATABASE_ENGINE"] = self.database_engine
 
         settings = self.settings
+        if reset:
+            settings._wrapped = None
         settings.configure(**customizations)
         
     @property
