@@ -20,7 +20,7 @@ for dirpath, dirnames, filenames in os.walk('d51'):
 
 setup(
     name='d51.django.virtualenv.base',
-    version='0.1',
+    version='0.2',
     description='Simple package for isolating Python code inside of Django',
     author='Travis Swicegood',
     author_email='development@domain51.com',
