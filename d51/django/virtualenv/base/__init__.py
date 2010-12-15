@@ -12,15 +12,23 @@ Please run the following to initialize the environment:
     pip install -E . -r ./requirements.txt
 """.lstrip()
 
-DATABASE_ENGINE = 'sqlite3'
+DEFAULT_SETTINGS = {
+    'DATABASE_ENGINE': 'sqlite3',
+    'DATABASES': {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'mydatabase'
+        }
+    },
+}
 
 class VirtualEnvironment(object):
     def __init__(self,
                  caller=sys.modules['__main__'],
-                 database_engine=DATABASE_ENGINE,
+                 default_settings=DEFAULT_SETTINGS,
                  error_message=ERROR_MESSAGE):
         self.caller = caller
-        self.database_engine = database_engine
+        self.default_settings = default_settings
         self.error_message = error_message
         self._activation_file = None
 
@@ -46,13 +54,13 @@ class VirtualEnvironment(object):
 
     def configure_settings(self, customizations, reset=True):
         # Django expects a `DATABASE_ENGINE` value
-        if "DATABASE_ENGINE" not in customizations:
-            customizations["DATABASE_ENGINE"] = self.database_engine
+        custom_settings = self.default_settings
+        custom_settings.update(custom_settings)
 
         settings = self.settings
         if reset:
             settings._wrapped = None
-        settings.configure(**customizations)
+        settings.configure(**custom_settings)
         
     @property
     def settings(self):
@@ -70,4 +78,5 @@ class VirtualEnvironment(object):
             self.caller.setUp()
 
         self.configure_settings(my_settings)
+        return self.call_command
  
