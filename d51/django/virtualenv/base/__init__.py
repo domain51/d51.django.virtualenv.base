@@ -55,7 +55,7 @@ class VirtualEnvironment(object):
     def configure_settings(self, customizations, reset=True):
         # Django expects a `DATABASE_ENGINE` value
         custom_settings = self.default_settings
-        custom_settings.update(custom_settings)
+        custom_settings.update(customizations)
 
         settings = self.settings
         if reset:
